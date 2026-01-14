@@ -2,13 +2,15 @@ FROM n8nio/n8n:latest
 
 USER root
 
-# 安裝 ffmpeg、curl 同繁中字體
-RUN apk update && apk add --no-cache \
+# 安裝 ffmpeg、curl 同繁中字體（Debian/Ubuntu base）
+RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     curl \
-    font-noto-cjk \
+    fonts-noto-cjk \
     fontconfig \
-    && fc-cache -f -v
+    && fc-cache -f -v \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # 創建工作目錄
 RUN mkdir -p /data/videos && chown -R node:node /data
